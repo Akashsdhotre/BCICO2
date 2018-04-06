@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/g1" android:checkableBehavior="single"> <item android:title="MAIN SECTIONS"/></group>
+
+
+    <item android:id="@+id/News_Feed" android:title="News Feed"  android:icon="@drawable/event"/>
+    <item android:id="@+id/Fav_Pages_Feed" android:title="Fav Pages Feed" android:icon="@drawable/search"/>
+    <item android:id="@+id/Friend_Groups" android:title="Friend Groups" android:icon="@drawable/settings"/>
+
+    <group android:id="@+id/g2" android:checkableBehavior="single"> <item android:title="YOUR ACCOUNT"/></group>
+
+    <item android:id="@+id/Profile_Settings" android:title="Profile Settings" android:icon="@drawable/activities"/>
+    <item android:id="@+id/Create_Fav_Pages" android:title="Create Fav Pages" android:icon="@drawable/settings"/>
+    <item android:id="@+id/log_out" android:title="Logout" android:icon="@drawable/logout3"/>
+
+
+    <group android:id="@+id/g3" android:checkableBehavior="single"> <item android:title="ABOUT OLYMPUS"/></group>
+
+    <item android:id="@+id/Terms_and_Conditions" android:title="Terms and Conditions" android:icon="@drawable/activities"/>
+    <item android:id="@+id/FAQs" android:title="FAQs" android:icon="@drawable/settings"/>
+    <item android:id="@+id/Careers" android:title="Careers" android:icon="@drawable/settings"/>
+    <item android:id="@+id/Contacts" android:title="Contacts" android:icon="@drawable/settings"/>
+
+</menu>

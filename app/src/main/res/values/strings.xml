@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">BCICO</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
+
+
+    <!--<string name="app_name">BCICO</string>-->
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="backButtonText">&lt; Back</string>
+
+    <string name="group1">Communicate</string>
+
+    <string-array name="cities">
+        <item>Not Selected</item>
+        <item>Pune</item>
+        <item>Mumbai</item>
+        <item>Delhi</item>
+        <item>Banglore</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="interests">
+        <item>Not Selected</item>
+        <item>Projects</item>
+        <item>Training</item>
+        <item>Events</item>
+        <item>Consultancy</item>
+        <item>Mining</item>
+        <item>Trading</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="whoiam">
+        <item>Not Selected</item>
+        <item>Investor</item>
+        <item>Partner</item>
+        <item>Brand Sponser</item>
+        <item>Individual</item>
+        <item>Student</item>
+        <item>Company</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

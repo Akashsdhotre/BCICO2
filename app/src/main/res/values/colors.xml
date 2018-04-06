@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <!--<color name="white">#FFFFFF</color>-->
+
+
+
+    <color name="colorPrimary">#ff5e3a</color>
+    <color name="colorPrimaryDark">#373A4D</color>
+    <color name="white">#ffffff</color>
+    <color name="colorAccent">#9094AC</color>
+    <color name="darkgrey">#6c6c6c</color>
+    <color name="textcolor">#9094AC</color>
+    <color name="edittextcolor">#454A51</color>
+    <color name="buttonBackColor">#7150BA</color>
+    <color name="toolbarcolor">#373A4D</color>
+    <color name="black">#000000</color>
+
+
+
+
+</resources>

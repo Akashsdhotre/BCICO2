@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!--<item-->
+        <!--android:id="@+id/tp0"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title=""-->
+        <!--app:showAsAction="always" />-->
+    <!--<item-->
+        <!--android:id="@+id/tp1"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title=""-->
+        <!--app:showAsAction="always" />-->
+
+
+    <!--<item-->
+        <!--android:id="@+id/tp2"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title=""-->
+        <!--app:showAsAction="always" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/tp3"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title=""-->
+        <!--app:showAsAction="always" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/tp4"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title=""-->
+        <!--app:showAsAction="always" />-->
+
+
+    <item
+        android:id="@+id/search_bar"
+        android:orderInCategory="100"
+        android:title="search"
+        android:icon="@drawable/searchicon"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView" />
+
+
+    <!--<item-->
+        <!--android:id="@+id/group"-->
+        <!--android:orderInCategory="101"-->
+        <!--android:title="@string/action_settings"-->
+        <!--android:icon="@drawable/group"-->
+        <!--app:showAsAction="always" />-->
+
+
+    <!--<item-->
+        <!--android:id="@+id/nav2"-->
+        <!--android:orderInCategory="101"-->
+        <!--android:title="@string/action_settings"-->
+        <!--android:icon="@drawable/ic_menu_manage"-->
+        <!--app:showAsAction="always" />-->
+
+
+    <!--<item-->
+        <!--android:id="@+id/logout"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="@string/action_settings"-->
+        <!--android:icon="@drawable/ic_menu_manage"-->
+        <!--app:showAsAction="always" />-->
+
+</menu>
