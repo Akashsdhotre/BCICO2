@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
    ImageView headerProfileImage;
    TextView headerUserName;
    String profileUrl,userFullName;
-    Picasso.Builder builder1;
+    Picasso.Builder builder1,builder2;
 
 
 
@@ -87,8 +88,37 @@ public class MainActivity extends AppCompatActivity
 
        drawer.addDrawerListener(mDrawerToggle);
 
+
+    //App bar profile img set
        profile=(ImageView)findViewById(R.id.profile);
-       profile.setImageResource(R.mipmap.me_round);
+        builder2 = new Picasso.Builder(MainActivity.this);
+        builder2.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new Fragment1.CircleTransform())
+                .into(profile);
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(MainActivity.this,profile);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.profile_popup_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+                        return true;
+
+                    }
+                });
+
+                popup.show();//showing popup menu
+
+            }
+        });
+    // end  App bar profile img set
 
 
        onViewPagerSetup();
@@ -112,6 +142,9 @@ public class MainActivity extends AppCompatActivity
            }
        });
 
+
+       // slide bar header profile image setup
+
        SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
        userFullName = sharedPreferences.getString("fullname", "N/A");
        profileUrl = sharedPreferences.getString("mainProfile", "N/A");
@@ -127,6 +160,8 @@ public class MainActivity extends AppCompatActivity
        builder1.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new Fragment1.CircleTransform())
                .into(headerProfileImage);
        headerUserName.setText(userFullName);
+
+       //end slide bar profile image setup
 
 
 
