@@ -5,15 +5,17 @@ package com.example.akashsdhotre.bcico2;
  */
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.akashsdhotre.bcico2.Network.NetworkUrls;
 import com.squareup.picasso.Picasso;
@@ -100,7 +102,30 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.ViewHo
 
 
 
+        holder.cardoption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(context, holder.cardoption);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.card_popup_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(context,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+                        return true;
+
+                    }
+                });
+
+                popup.show();//showing popup menu
+
+
+            }
+        });
 
 
 ////        viewHolder.tv_version.setText(mFilteredList.get(i).getVer());
