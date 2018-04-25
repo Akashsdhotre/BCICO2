@@ -17,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.akashsdhotre.bcico2.Network.CircleTransform;
 import com.example.akashsdhotre.bcico2.Network.NetworkUrls;
 import com.squareup.picasso.Picasso;
 
@@ -77,7 +78,7 @@ public class HomeDataAdapter extends RecyclerView.Adapter<HomeDataAdapter.ViewHo
 
         builder1 = new Picasso.Builder(holder.cardProfileImage.getContext());
 
-        builder1.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileImage).transform(new Fragment1.CircleTransform())
+        builder1.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileImage).transform(new CircleTransform())
                 .into(holder.cardProfileImage, new com.squareup.picasso.Callback() {
 
 

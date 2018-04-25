@@ -10,7 +10,7 @@ public class NetworkUrls {
 
     public static abstract class BCICOLinks {
         //public static final String BASE_URL = "https://connect-mscom.com/";
-        public static final String BASE_URL="http://192.168.3.23:9000/";
+        public static final String BASE_URL="http://192.168.5.175:9000/";
        /*
         //Common URL
         public static final String LOGIN_URL="http://connect-mscom.com/Apicalls/userlogin";
@@ -60,6 +60,7 @@ public class NetworkUrls {
         //Common URL
         public static final String LOGIN_URL = BASE_URL + "login";
         public static final String GET_POST_DATA = BASE_URL + "getPostData";
+        public static final String INSERT_POST_DATA = BASE_URL + "insertpostData";
         public static final String REGISTRATION_URL = BASE_URL + "createUser";
         public static final String LOGOUT_URL = BASE_URL + "Apicalls/userlogout";
         public static final String REFRESH_TOKEN_URL = BASE_URL + "Apicalls/update_user_token";

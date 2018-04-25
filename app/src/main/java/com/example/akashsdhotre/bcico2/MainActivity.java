@@ -5,15 +5,20 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -36,8 +41,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.akashsdhotre.bcico2.Network.CircleTransform;
 import com.example.akashsdhotre.bcico2.Network.NetworkUrls;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -63,6 +70,8 @@ public class MainActivity extends AppCompatActivity
    String profileUrl,userFullName;
     Picasso.Builder builder1,builder2;
 
+    SharedPreferences sharedPreferences;
+
 
 
     @Override
@@ -77,12 +86,42 @@ public class MainActivity extends AppCompatActivity
 //       getSupportActionBar().setLogo(R.drawable.bcico);
 //       getSupportActionBar().setDisplayUseLogoEnabled(true);
 
+//        ab.setDisplayShowHomeEnabled(true);
+//        ab.setDisplayHomeAsUpEnabled(true);
+
+
+
+//        Picasso.with(this)
+//                .load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl)
+//                .into(new Target()
+//                {
+//                    @Override
+//                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from)
+//                    {
+//                        Drawable d = new BitmapDrawable(getResources(), bitmap);
+//                        ab.setIcon(d);
+//                        ab.setDisplayShowHomeEnabled(true);
+//                        ab.setDisplayHomeAsUpEnabled(true);
+//                    }
+//
+//                    @Override
+//                    public void onBitmapFailed(Drawable errorDrawable)
+//                    {
+//                    }
+//
+//                    @Override
+//                    public void onPrepareLoad(Drawable placeHolderDrawable)
+//                    {
+//                    }
+//                });
+
+
 
 
        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView2 = (NavigationView) findViewById(R.id.nav_view2);
+//        navigationView2 = (NavigationView) findViewById(R.id.nav_view2);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -90,35 +129,43 @@ public class MainActivity extends AppCompatActivity
 
 
     //App bar profile img set
-       profile=(ImageView)findViewById(R.id.profile);
-        builder2 = new Picasso.Builder(MainActivity.this);
-        builder2.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new Fragment1.CircleTransform())
-                .into(profile);
 
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(MainActivity.this,profile);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.profile_popup_menu, popup.getMenu());
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
-                        return true;
-
-                    }
-                });
-
-                popup.show();//showing popup menu
-
-            }
-        });
-    // end  App bar profile img set
+//       profile=(ImageView)findViewById(R.id.profiletoolbar);
+//
+//               builder2 = new Picasso.Builder(MainActivity.this);
+//        builder2.build().with(this).load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new CircleTransform())
+//                .into(profile_icon);
+//
+//        builder2 = new Picasso.Builder(MainActivity.this);
+//        builder2.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/22.jpeg").transform(new CircleTransform())
+//                .into(profile);
+//
+//        profile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //Creating the instance of PopupMenu
+//                PopupMenu popup = new PopupMenu(MainActivity.this,profile);
+//                //Inflating the Popup using xml file
+//                popup.getMenuInflater().inflate(R.menu.profile_popup_menu, popup.getMenu());
+//
+//                //registering popup with OnMenuItemClickListener
+//
+//
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+//                        return true;
+//
+//                    }
+//                });
+//
+//                popup.show();//showing popup menu
+//
+//            }
+//        });
+//    // end  App bar profile img set
 
 
        onViewPagerSetup();
@@ -145,7 +192,7 @@ public class MainActivity extends AppCompatActivity
 
        // slide bar header profile image setup
 
-       SharedPreferences sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+       sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
        userFullName = sharedPreferences.getString("fullname", "N/A");
        profileUrl = sharedPreferences.getString("mainProfile", "N/A");
 
@@ -157,8 +204,12 @@ public class MainActivity extends AppCompatActivity
 
        builder1 = new Picasso.Builder(MainActivity.this);
 
-       builder1.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new Fragment1.CircleTransform())
+       System.out.println(""+NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl);
+       Toast.makeText(this,""+NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl,Toast.LENGTH_LONG).show();
+
+       builder1.build().load(NetworkUrls.BCICOLinks.BASE_URL+"/profile/"+profileUrl).transform(new CircleTransform())
                .into(headerProfileImage);
+
        headerUserName.setText(userFullName);
 
        //end slide bar profile image setup
@@ -244,13 +295,19 @@ public class MainActivity extends AppCompatActivity
         slidebar5.setVisibility(View.GONE);
         slidebar1.setVisibility(View.VISIBLE);
 
+        lin1.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        lin2.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        lin3.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        lin4.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        lin5.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
         fragment1flag=true;
         fragment2flag =false;
         fragment3flag=false;
         fragment4flag=false;
         fragment5flag=false;
 
-
+//default page setup end
 
 
 
@@ -420,12 +477,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onCreateOptionsMenu(menu);
 
         getMenuInflater().inflate(R.menu.main, menu);
+
+
+
+//        MenuItem item2=menu.findItem(R.id.profile_icon);
+//
+//        item2.getActionView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this,"clicked",Toast.LENGTH_LONG).show();
+//
+//
+//            }
+//        });
+
 
         MenuItem item=menu.findItem(R.id.search_bar);
         SearchView searchView=(SearchView)item.getActionView();
@@ -443,6 +517,8 @@ public class MainActivity extends AppCompatActivity
             if (searchText != null) {
                 searchText.setTextColor(Color.WHITE);
                 searchText.setHintTextColor(Color.WHITE);
+
+
             }
         }
 
@@ -511,61 +587,35 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-//        if (id == R.id.group) {
+//        if (id == R.id.profile_icon) {
 //
-//            drawer.openDrawer(navigationView2);
-
-//            return true;
+////            //Creating the instance of PopupMenu
+////            PopupMenu popup = new PopupMenu(MainActivity.this,profile);
+////            //Inflating the Popup using xml file
+////            popup.getMenuInflater().inflate(R.menu.profile_popup_menu, popup.getMenu());
+////
+////            //registering popup with OnMenuItemClickListener
+////
+////
+////            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+////                @Override
+////                public boolean onMenuItemClick(MenuItem item) {
+////                    Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+////                    return true;
+////
+////                }
+////            });
+////
+////            popup.show();//showing popup menu
+//            Toast.makeText(MainActivity.this,"image icon click",Toast.LENGTH_SHORT).show();
+////
+//           return false;
+//
+//
 //        }
 
 
 
-//       if(id==R.id.nave1)
-//       {
-//           drawer.openDrawer(navigationView);
-//
-//       }
-//
-//        if(id==R.id.nav2)
-//        {
-//            drawer.openDrawer(navigationView2);
-//
-//        }
-
-
-//        item2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if (drawer.isDrawerOpen(navigationView)) {
-//                    drawer.closeDrawer(navigationView);
-//                } else if (!drawer.isDrawerOpen(navigationView)) {
-//                    drawer.openDrawer(navigationView);
-//                }
-//
-//                if (drawer.isDrawerOpen(navigationView2)) {
-//                    drawer.closeDrawer(navigationView2);
-//                }
-//            }
-//        });
-//
-//        imgRight.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if (drawer.isDrawerOpen(navigationView2)) {
-//                    drawer.closeDrawer(navigationView2);
-//                } else if (!drawer.isDrawerOpen(navigationView2)) {
-//                    drawer.openDrawer(navigationView2);
-//                }
-//
-//                if (drawer.isDrawerOpen(navigationView)) {
-//                    drawer.closeDrawer(navigationView);
-//                }
-//
-//
-//            }
-//        });
 
 
 

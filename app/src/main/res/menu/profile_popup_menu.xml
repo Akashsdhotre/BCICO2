@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="pop">
 
-    <item
-        android:id="@+id/one"
-        android:title="Profile Settings"/>
-
-    <item
-        android:id="@+id/two"
-        android:title="Logout"/>
-
-
+    <item android:id="@+id/Profile_Settings" android:title="Profile Settings" android:icon="@drawable/settings"/>
+    <item android:id="@+id/log_out" android:title="Logout" android:icon="@drawable/logout3"/>
 
 </menu>

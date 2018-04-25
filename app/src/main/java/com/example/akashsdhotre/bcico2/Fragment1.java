@@ -9,6 +9,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,11 +39,13 @@ import java.util.ArrayList;
  */
 public class Fragment1 extends Fragment implements HTTPCallback {
 
+    FloatingActionButton post_view;
     public  static HomeDataAdapter adapter;
     RecyclerView recyclerView;
    // private ArrayList<AndroidVersion> androidVersions = new ArrayList<>();
    private ArrayList<HomeDataClass> allData = new ArrayList<>();
     View view;
+
 
 
     public Fragment1() {
@@ -65,6 +68,17 @@ public class Fragment1 extends Fragment implements HTTPCallback {
 
 
         setHasOptionsMenu(true);  // To performing action bar operation on fragment
+
+
+        post_view=(FloatingActionButton)view.findViewById(R.id.post_view);
+
+        post_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getActivity(),UploadActivity.class);
+                startActivity(i);
+            }
+        });
 
         initViews();             //
 
@@ -245,38 +259,5 @@ public class Fragment1 extends Fragment implements HTTPCallback {
 
     }
 
-    static public class CircleTransform implements Transformation {
-        @Override
-        public Bitmap transform(Bitmap source) {
-            int size = Math.min(source.getWidth(), source.getHeight());
 
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-
-            Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-            if (squaredBitmap != source) {
-                source.recycle();
-            }
-
-            Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
-
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            BitmapShader shader = new BitmapShader(squaredBitmap,
-                    BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-            paint.setShader(shader);
-            paint.setAntiAlias(true);
-
-            float r = size / 2f;
-            canvas.drawCircle(r, r, r, paint);
-
-            squaredBitmap.recycle();
-            return bitmap;
-        }
-
-        @Override
-        public String key() {
-            return "circle";
-        }
-    }
 }

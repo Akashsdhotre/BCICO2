@@ -18,5 +18,8 @@
     <string name="fa_comment_alt">&#xf27a;</string>
     <string name="fa_ellipsis_v">&#xf142;</string>
 
+    <string name="fas_fa_video">&#xf03d;</string>
+    <string name="fas_fa_camera">&#xf030;</string>
+
 
 </resources>
