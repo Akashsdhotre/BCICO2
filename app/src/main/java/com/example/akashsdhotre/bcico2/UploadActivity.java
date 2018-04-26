@@ -28,9 +28,8 @@ import com.example.akashsdhotre.bcico2.Network.CircleTransform;
 import com.example.akashsdhotre.bcico2.Network.HTTPTask;
 import com.example.akashsdhotre.bcico2.Network.NetworkUrls;
 import com.example.akashsdhotre.bcico2.Network.UploadImage;
-import com.example.akashsdhotre.bcico2.model.FileInfo;
-import com.example.akashsdhotre.bcico2.remote.APIUtils;
-import com.example.akashsdhotre.bcico2.remote.FileService;
+
+import com.example.akashsdhotre.bcico2.service.UserClient;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -60,11 +59,14 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class UploadActivity extends AppCompatActivity implements HTTPCallback {
+public class UploadActivity extends AppCompatActivity  {
     SharedPreferences sharedPreferences;
     Picasso.Builder builder1;
     Typeface font;
@@ -73,11 +75,11 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
     LinearLayout linCamera,linVideo;
     TextView uploadPhoto,uploadVideo;
     Button post;
-    File file;
+    File takephotofile;
     String picturePath;
     String token;
 
-    FileService fileService;
+
 
 
 
@@ -97,7 +99,7 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
         uploadVideo=(TextView)findViewById(R.id.uploadVideo);
         post=(Button)findViewById(R.id.post);
 
-        fileService= APIUtils.getFileService();
+
 
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
         String profileUrl = sharedPreferences.getString("mainProfile", "N/A");
@@ -128,81 +130,67 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
         });
 
 
-//        uploadPhoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                selectImage();
-//
-//            }
-//        });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+
                 sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
                 token = sharedPreferences.getString("token", "N/A");
 
-//                //
-//
-//                UploadImage task=new UploadImage(token,picturePath,UploadActivity.this);
-//                task.execute();
-//
-//                //
+                uploadFile();
+
+
+
+            }
+
+            private void uploadFile() {
+
                 File file=new File(picturePath);
-                RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
-                MultipartBody.Part body=MultipartBody.Part.createFormData("image",file.getName(),requestBody);
 
-                retrofit2.Call<FileInfo> call=fileService.upload(body);
+                RequestBody tokenpart=RequestBody.create(MultipartBody.FORM,token);
+                RequestBody typepart=RequestBody.create(MultipartBody.FORM,"image");
+                RequestBody actionpart=RequestBody.create(MultipartBody.FORM,"New");
+                RequestBody textpart=RequestBody.create(MultipartBody.FORM,uploadText.getText().toString());
 
-                call.enqueue(new Callback<FileInfo>() {
+                RequestBody filebody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                MultipartBody.Part filepart=MultipartBody.Part.createFormData("image",file.getName(),filebody);
+
+
+
+                Retrofit.Builder builder=new Retrofit.Builder()
+                        .baseUrl(NetworkUrls.BCICOLinks.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create());
+
+                Retrofit retrofit=builder.build();
+
+                UserClient client=retrofit.create(UserClient.class);
+
+                retrofit2.Call<ResponseBody> call=client.insertpostData(tokenpart,typepart,actionpart,textpart,filepart);
+                call.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(retrofit2.Call<FileInfo> call, Response<FileInfo> response) {
-                        if(response.isSuccessful())
-                        {
-                            Toast.makeText(UploadActivity.this,"Image uploaded successfully",Toast.LENGTH_SHORT).show();
-                        }
+                    public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        Toast.makeText(UploadActivity.this,"Image uploaded successfully",Toast.LENGTH_SHORT).show();
+                        uploadText.setText("");
+                        viewImage.setImageResource(0);
+
                     }
 
                     @Override
-                    public void onFailure(retrofit2.Call<FileInfo> call, Throwable t) {
+                    public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+
+                        Toast.makeText(UploadActivity.this,"Not Uploaded",Toast.LENGTH_SHORT).show();
+                        uploadText.setText("");
+                        viewImage.setImageResource(0);
 
 
-                        Toast.makeText(UploadActivity.this,"Error: "+t.getMessage(),Toast.LENGTH_SHORT).show();
 
 
                     }
                 });
-
-
-
-
-
-
-
-
-
-//                JSONObject jsonObject = new JSONObject();
-//
-//                try {
-//                    jsonObject.put("token", token);
-//                    jsonObject.put("image", picturePath);
-//                    jsonObject.put("type", "image");
-//                    jsonObject.put("action", "New");
-//                    jsonObject.put("text", "my post");
-//                    jsonObject.put("location", "pune");
-//
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                HTTPTask httpTask = new HTTPTask();
-//                System.out.println(jsonObject.toString());
-//                httpTask.setData( UploadActivity.this, UploadActivity.this, "POST", NetworkUrls.BCICOLinks.INSERT_POST_DATA, jsonObject.toString(), 1);
-//                httpTask.execute("");
-
-
-
 
 
             }
@@ -212,44 +200,7 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
 
     }
 
-        private void upload()throws Exception {
 
-        //Url of the server
-        String url = "http://192.168.5.175:9000/";
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url);
-        MultipartEntity mpEntity = new MultipartEntity();
-        //Path of the file to be uploaded
-        String filepath = picturePath;
-        File file = new File(filepath);
-        ContentBody cbFile = new FileBody(file, "image/jpeg");
-
-        //Add the data to the multipart entity
-        mpEntity.addPart("image", cbFile);
-        mpEntity.addPart("token", new StringBody(token, Charset.forName("UTF-8")));
-        mpEntity.addPart("type", new StringBody("image", Charset.forName("UTF-8")));
-        mpEntity.addPart("action", new StringBody("New", Charset.forName("UTF-8")));
-        mpEntity.addPart("text", new StringBody("my post", Charset.forName("UTF-8")));
-        mpEntity.addPart("location", new StringBody("pune", Charset.forName("UTF-8")));
-
-
-        post.setEntity(mpEntity);
-        //Execute the post request
-        HttpResponse response1 = client.execute(post);
-        //Get the response from the server
-        HttpEntity resEntity = response1.getEntity();
-        String Response=EntityUtils.toString(resEntity);
-        Log.d("Response:", Response);
-        //Generate the array from the response
-        JSONArray jsonarray = new JSONArray("["+Response+"]");
-        JSONObject jsonobject = jsonarray.getJSONObject(0);
-        //Get the result variables from response
-        String result = (jsonobject.getString("result"));
-        String msg = (jsonobject.getString("msg"));
-        //Close the connection
-        client.getConnectionManager().shutdown();
-
-    }
 
     private void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
@@ -286,6 +237,9 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
+
+                Toast.makeText(this,"take photo path="+Environment.getExternalStorageDirectory().toString(),Toast.LENGTH_LONG).show();
+
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
@@ -308,9 +262,9 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
                             + "Phoenix" + File.separator + "default";
                     f.delete();
                     OutputStream outFile = null;
-                     file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                     takephotofile = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
-                        outFile = new FileOutputStream(file);
+                        outFile = new FileOutputStream(takephotofile);
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
                         outFile.flush();
                         outFile.close();
@@ -347,43 +301,7 @@ public class UploadActivity extends AppCompatActivity implements HTTPCallback {
     }
 
 
-    @Override
-    public void onSuccess(int statusCode, String statusMessage, String data, int version) {
-
-        JSONObject jResponse;
-        try {
-            System.out.println("here " + data);
-            jResponse = new JSONObject(data.trim());
-            boolean message =  jResponse.getBoolean("success");
-            System.out.println("/*********** message///////"+message);
 
 
-            if (message == true) {
 
-                Toast.makeText(this, "Image Uploading Successfully", Toast.LENGTH_LONG).show();
-
-
-            }
-
-            else
-            {
-                Toast.makeText(this, "Image Uploading fail", Toast.LENGTH_LONG).show();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    public void onFailure(int statusCode, String statusMessage) {
-
-    }
-
-    @Override
-    public void onError(int statusCode, String statusMessage) {
-
-    }
 }
